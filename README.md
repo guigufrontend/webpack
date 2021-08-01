@@ -43,7 +43,9 @@ production之后会被uglify
 
 ## webpack 打包过程
 1. 分析依赖以及依赖的路径
-2. 对内容进行编译
+2. 对内容进行编译，生成代码片段，处理成一个chunk
+3. 对收集的依赖进行编辑，生成代码片段， 处理成一个chunk，每一个依赖就是一个module
+4. 把所有依赖处理成一个对象，即依赖图谱
 
 ## webpack.config.js 改名
 可以对配置文件改名，能够随便起名字
@@ -53,3 +55,28 @@ production之后会被uglify
 
 ## webpack占位符
 [name] 名称
+
+## chunks
+打包后生成的文件中，作为参数的对象包含
+```json
+    {
+        "xxx.js":(function(module, exports, __webpack_require__) {
+        eval("const str = __webpack_require__(/*! ./other */ \"xxxxxxx)\n\n//# sourceURL=webpack:///./src/index.js?");
+        })
+    }
+```
+
+这种结构就叫做依赖图谱
+
+eval中执行的string就叫代码片段
+
+bundle chunk chunks module
+bundle 构建后产生的资源文件， bundle至少对应一个chunk
+chunks  一个chunks对应至少一个module
+module 一个module对应至少一个chunk
+
+## 插件
+plugins
+
+* html-webpack-plugin  默认安装5.x @4安装4.x
+  作用：自动生产html文件，引入bundle文件，压缩html、、、、
