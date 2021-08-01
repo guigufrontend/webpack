@@ -40,3 +40,13 @@ mode development production none
 
 development模式能够看到打包出来得代码
 production之后会被uglify
+
+## webpack 打包过程
+1. 分析依赖以及依赖的路径
+2. 对内容进行编译
+
+## webpack.config.js 改名
+可以对配置文件改名，能够随便起名字
+
+1. 在package.json中配置script，自定义打包命令，使用`webpack --config xxxx` 表示使用xxxx文件作为配置文件来打包
+2. 在terminal中执行自定义的打包命令即可
