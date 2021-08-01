@@ -25,3 +25,18 @@ npm install webpack-cli
 但是不实用，大部分情况下还是需要自定义配置
 
 但是配置门槛低了，简单了
+
+0配置执行打包
+npx webpack
+
+可以看到dist文件夹下有main.js，手动添加html文件之后可以在浏览器打开
+
+main.js文件中可以看到就算是一行代码，打包内容也很长，也就是webpack给出了很多兼容性代码
+
+## webpack手动配置
+webpack.config.js
+
+mode development production none
+
+development模式能够看到打包出来得代码
+production之后会被uglify
