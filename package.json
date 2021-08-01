@@ -10,7 +10,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "px-build": "webpack --config ./pxwebpack.config.js"
+    "px-build": "webpack --config ./pxwebpack.config.js",
+    "dev": "webpack"
 
   },
   "repository": {

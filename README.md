@@ -50,3 +50,6 @@ production之后会被uglify
 
 1. 在package.json中配置script，自定义打包命令，使用`webpack --config xxxx` 表示使用xxxx文件作为配置文件来打包
 2. 在terminal中执行自定义的打包命令即可
+
+## webpack占位符
+[name] 名称
