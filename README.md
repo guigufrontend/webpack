@@ -80,3 +80,8 @@ plugins
 
 * html-webpack-plugin  默认安装5.x @4安装4.x
   作用：自动生产html文件，引入bundle文件，压缩html、、、、
+
+## 设置npm源
+
+* 方法1. termail中使用命令npm config set registry https://registry.npm.taobao.org
+* 方法2. 添加.npmrc配置文件,写入 `registry=https://registry.npm.taobao.org`
