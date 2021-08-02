@@ -80,8 +80,50 @@ plugins
 
 * html-webpack-plugin  默认安装5.x @4安装4.x
   作用：自动生产html文件，引入bundle文件，压缩html、、、、
+* clean-webpack-plugin 每次打包之前自动清理dist文件夹
+    ```const {CleanWebpackPlugin}  = require('clean-webpack-plugin')```
 
 ## 设置npm源
 
 * 方法1. termail中使用命令npm config set registry https://registry.npm.taobao.org
 * 方法2. 添加.npmrc配置文件,写入 `registry=https://registry.npm.taobao.org`
+
+## css端处理
+
+webpack只支持js、json其他类型的文件需要loader处理
+loader对文件进行预处理
+**注意多个loader作用于一个模块时，有执行顺序，按照自右向左的方向执行，一个loader的结果作为另一个loader的输入**
+一个loader建议只做一件事
+安装css相关loader，以下默认安装的是5.x，4.x需要指定版本
+
+**lerna？？？**
+**模块联邦？？**
+
+1. css-loader@5.2.6
+* 对css代码进行序列化，把css代码放入chunk中
+但是它没有吧代码放入style标签中，此时css代码不生效
+* options可以支持css-module
+2. style-loader@2.0.0 
+把css代码放到html文件的style标签中
+3. less-loader@7.3.0
+注意使用less需要安装less
+处理less语法，生成css
+4. postcss-loader@4.2.0
+使用postcss需要先安装postcss
+postcss是200多个处理css的工具集
+可以在根目录下建立postcss.config.js进行相关配置
+* autoprefixer给样式添加前缀
+* browserslist制定目标浏览器集合
+   - 在package.json中使用 "browserslist":[ "> 1%", "last 3 versions"]  市场占有率>1%的浏览器,兼容浏览器最近的两个大版本
+   - 根目录下定制.browserslistrc配置文件
+   - 查询符合配置的浏览器有哪些？`npx browserslist ">1%,last 2 versions"`
+* cssnano css压缩器
+
+5. mini-css-extract-plugin@1.6.2
+把css抽离成文件，不直接使用style标签的方式
+- 下载mini-css-extract-plugin，const minicssextractplugin = require('mini-css-extract-plugin')在plugin中new minicssextractplugin({filename:'xxx.css'})，指定生成css的名称
+- 使用mini-css-extract-plugin自带的loader,minicssextractplugin.loader替换掉style-loader
+- 结合html-webpack-plugin可以直接吧生成的css文件使用link标签在html文件中使用
+
+## 自定义实现loader
+loader路径使用resolveLoader：告知webpack如何匹配loader

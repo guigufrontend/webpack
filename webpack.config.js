@@ -4,7 +4,8 @@
 
 const path  =  require('path')
 const htmlwebpackplugin = require('html-webpack-plugin')
-
+const minicssextractplugin = require('mini-css-extract-plugin')
+const {CleanWebpackPlugin}  = require('clean-webpack-plugin')
 module.exports={
     // 打包的入口位置
     // 支持单页面入口spa 多页面入口mpa
@@ -21,6 +22,12 @@ module.exports={
     },
     //打包模式
     mode:'development',// development production none
+    resolveLoader:{
+        modules:[
+            'node_modules',
+            path.resolve(__dirname,'./myloaders')
+        ]
+    },
     plugins:[//插件
         new htmlwebpackplugin({
             // 模板匹配
@@ -32,7 +39,7 @@ module.exports={
             // 模板匹配
             template:'./src/index.html',
             filename:'login.html',
-            // chunks:["login"]
+            chunks:["login"]
 
         }),  
         new htmlwebpackplugin({
@@ -41,6 +48,52 @@ module.exports={
             filename:'list.html',
             chunks:["list"]
 
-        }),  
+        }),
+        // css抽离成独立的文件，不用style的内联方式  
+        new minicssextractplugin({
+            filename:"index.css"
+        }),
+        new CleanWebpackPlugin(),
     ], 
+    module:{
+        rules:[
+            {
+                test:/\.css$/,//css后缀的使用use那些loader
+                use:['style-loader','css-loader'],
+            },
+            // {
+            //     test:/\.less$/,//less-loader生成css再交由cssloader处理
+            //     use:[
+            //         // minicssextractplugin.loader,
+            //         'style-loader',
+            //         {
+            //             loader:'css-loader',
+            //             options:{
+            //                 modules:true
+            //             }
+            //         },
+            //         'postcss-loader',
+            //         'less-loader'
+            //     ],
+            // },
+            {
+                test:/.less$/,//自定义cssloaders
+                use:[
+                    'pxstyle-loader',
+                    'pxcss-loader',
+                    'pxless-loader'
+                ],
+            },
+            {
+                test:/list\.js$/,//css后缀的使用use那些loader
+                use:{
+                    // loader:path.resolve(__dirname,"./myloaders/px-loader"),
+                    loader:'px-loader', //配置resolveLoader之后可以直接使用文件名称
+                    options:{
+                        str:'这是参数'
+                    }
+                }
+            },
+        ]
+    }
 }
