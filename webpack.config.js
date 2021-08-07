@@ -61,29 +61,29 @@ module.exports={
                 test:/\.css$/,//css后缀的使用use那些loader
                 use:['style-loader','css-loader'],
             },
-            // {
-            //     test:/\.less$/,//less-loader生成css再交由cssloader处理
-            //     use:[
-            //         // minicssextractplugin.loader,
-            //         'style-loader',
-            //         {
-            //             loader:'css-loader',
-            //             options:{
-            //                 modules:true
-            //             }
-            //         },
-            //         'postcss-loader',
-            //         'less-loader'
-            //     ],
-            // },
             {
-                test:/.less$/,//自定义cssloaders
+                test:/\.less$/,//less-loader生成css再交由cssloader处理
                 use:[
-                    'pxstyle-loader',
-                    'pxcss-loader',
-                    'pxless-loader'
+                    minicssextractplugin.loader,
+                    // 'style-loader',
+                    {
+                        loader:'css-loader',
+                        options:{
+                            modules:true
+                        }
+                    },
+                    'postcss-loader',
+                    'less-loader'
                 ],
             },
+            // {
+            //     test:/.less$/,//自定义cssloaders
+            //     use:[
+            //         'pxstyle-loader',
+            //         'pxcss-loader',
+            //         'pxless-loader'
+            //     ],
+            // },
             {
                 test:/list\.js$/,//css后缀的使用use那些loader
                 use:{
@@ -91,6 +91,18 @@ module.exports={
                     loader:'px-loader', //配置resolveLoader之后可以直接使用文件名称
                     options:{
                         str:'这是参数'
+                    }
+                }
+            },
+            {
+                // test:/\.png$/,
+                test:/\.(png|jp?g|git|webp)$/,
+                use:{
+                    loader:'file-loader',
+                    options:{
+                        name:"[name].[ext]",// 生成的文件名词
+                        outputPath:"images", // 文件的输出位置
+                        publicPath:'./images', //文件的使用位置， publickPath+ name 生成css中图片的使用路径
                     }
                 }
             },

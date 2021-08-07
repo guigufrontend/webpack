@@ -127,3 +127,13 @@ postcss是200多个处理css的工具集
 
 ## 自定义实现loader
 loader路径使用resolveLoader：告知webpack如何匹配loader
+
+## 静态资源
+
+### 图片
+1. file-loader 5版本的webpack使用其他方案，所有webpack4不用制定版本
+    文件放入输出路径中，在代码中拿到资源路径
+
+### 第三方字体文件
+
+资源压缩、优化
