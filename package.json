@@ -10,6 +10,7 @@
     "css-loader": "^5.2.6",
     "cssnano": "^5.0.7",
     "file-loader": "^6.2.0",
+    "glob": "^7.1.7",
     "html-webpack-plugin": "^4.5.2",
     "image-webpack-loader": "^7.0.1",
     "less": "^4.1.1",
@@ -25,7 +26,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "px-build": "webpack --config ./pxwebpack.config.js",
-    "dev": "webpack"
+    "dev": "webpack",
+    "mpa": "webpack --config ./mpa.webpack.config.js"
   },
   "repository": {
     "type": "git",
