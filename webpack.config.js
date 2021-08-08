@@ -6,6 +6,8 @@ const path  =  require('path')
 const htmlwebpackplugin = require('html-webpack-plugin')
 const minicssextractplugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin}  = require('clean-webpack-plugin')
+const pxPlugin = require('./myPlugin/px-plugin') //自定义plugin
+
 module.exports={
     // 打包的入口位置
     // 支持单页面入口spa 多页面入口mpa
@@ -54,6 +56,7 @@ module.exports={
             filename:"index.css"
         }),
         new CleanWebpackPlugin(),
+        new pxPlugin({name:'hello pxpx'})
     ], 
     module:{
         rules:[
@@ -84,16 +87,16 @@ module.exports={
             //         'pxless-loader'
             //     ],
             // },
-            {
-                test:/list\.js$/,//css后缀的使用use那些loader
-                use:{
-                    // loader:path.resolve(__dirname,"./myloaders/px-loader"),
-                    loader:'px-loader', //配置resolveLoader之后可以直接使用文件名称
-                    options:{
-                        str:'这是参数'
-                    }
-                }
-            },
+            // {
+            //     test:/list\.js$/,//css后缀的使用use那些loader
+            //     use:{
+            //         // loader:path.resolve(__dirname,"./myloaders/px-loader"),
+            //         loader:'px-loader', //配置resolveLoader之后可以直接使用文件名称
+            //         options:{
+            //             str:'这是参数'
+            //         }
+            //     }
+            // },
             {
                 // test:/\.png$/,
                 test:/\.(png|jp?g|git|webp)$/,
@@ -108,12 +111,12 @@ module.exports={
                             limit: 31 * 1024, // 限制多少字节以内的文件转base64
                         }
                     },
-                    {
-                        loader:"image-webpack-loader",
-                        options:{
+                    // {
+                    //     loader:"image-webpack-loader", // 图片压缩
+                    //     options:{
 
-                        }
-                    }
+                    //     }
+                    // }
                 ]
             },
             {
@@ -126,6 +129,25 @@ module.exports={
                             outputPath:'font',
                             publicPath:"./font" // 注意路径
                         }
+                    }
+                ]
+            },
+            {
+                test:/\.js$/,
+                use:[
+                    {
+                        loader:'babel-loader',
+                        // options:{
+                        //     presets:[
+                        //         [
+                        //             "@babel/preset-env",
+                        //         { // 注意preset的配置格式，是个数组
+                        //             targets:{edge:'17'},
+                        //             corejs: 3,  // 使用那个版本的corejs
+                        //             useBuiltIns:'usage', //按需引入
+                        //         }]
+                        //     ], // es6+ 语法变异成es5
+                        // }
                     }
                 ]
             }

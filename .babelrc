@@ -1,0 +1,12 @@
+{
+    "presets":[
+        [
+            "@babel/preset-env", // es6+ 语法变异成es5
+        { // 注意preset的配置格式，是个数组
+            "targets":{"edge":17},
+            "corejs": 3,  // 使用那个版本的corejs
+            "useBuiltIns":"usage"//按需引入
+        }],
+        "@babel/preset-react"
+    ] 
+}

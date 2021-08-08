@@ -42,6 +42,8 @@ development模式能够看到打包出来得代码
 production之后会被uglify
 
 ## webpack 打包过程
+
+0. webpack会合并 webpack配置，启动构建任务
 1. 分析依赖以及依赖的路径
 2. 对内容进行编译，生成代码片段，处理成一个chunk
 3. 对收集的依赖进行编辑，生成代码片段， 处理成一个chunk，每一个依赖就是一个module
@@ -168,4 +170,66 @@ module:{
 ```
 
 ## 多页面打包解决方案
+见mpa.webpack.config.js
 
+
+## js模块处理
+
+压缩，tree shaking，按需加载，懒加载
+
+代码分割（提取公共模块，利用浏览器缓存）
+
+### babel js的编译器
+* 语法转换，不能转换特性
+* 使用polyfill方式在目标环境中添加缺失特性（第三方polyfill模块，如core-js实现）
+* 源码转换
+
+1. 安装babel babel7.x目录结构变化都在@babel/xxx中
+babel-loader依赖于@babel/core
+```
+npm i @babel/core babel-loader -D
+```
+
+安装完成后，实际上还不能使用babel功能，它的功能都是由它的插件完成的，还需要配置插件启用相应的功能
+
+2. preset：
+
+    1. @babel/preset-env 处理es6+语法
+    2. @babel/preset-typescript 处理ts
+    3. @babel/preset-react 处理react
+    4. @babel/preset=flow 处理flow
+
+此时只转换了语法，特性并没有处理，需要使用polyfill预先加载特性
+
+3. polyfill
+```
+npm i @babel/polyfill -S
+```
+安装完成之后，可以在.js文件中直接引入`import "@babel/polyfill"` 这样js文件就能预先加载高版本特性
+缺点： @babel/polyfill 预先加载所有特性，到时打包直接大了400+kb
+
+polyfill按需引入
+@babel/preset-env 有先关配置选项 
+useBuiltIns ： usage（全自动检测，与entry相比不需要手动引入） false（默认值，不会按需引入） entry（需要在入口文件写上`import "@babel/polyfill"`，babel就会根据代码情况按需导入）
+
+core.js 
+分为2.x 3.x 区别：3.x特性更多，包含的版本更多
+现在已经不推荐直接使用polyfill，而是直接安装core.js 和 regenerator-runtime.runtime
+
+```
+npm i core-js@3 -S
+```
+
+4. 打包react
+安装react相关依赖 react react-dom
+使用@babel-react 打包react
+
+5. 打包vue
+使用vue-loader
+
+## 自定义plugin
+
+plugin是一个类
+需要实现一个apply的方法，接收一个compiler参数
+compiler是一个实例化的webpack对象 包含配置等信息
+compiler里面有hooks函数，可以把插件放入某些生命周期内执行
