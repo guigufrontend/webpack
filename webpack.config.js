@@ -97,15 +97,38 @@ module.exports={
             {
                 // test:/\.png$/,
                 test:/\.(png|jp?g|git|webp)$/,
-                use:{
-                    loader:'file-loader',
-                    options:{
-                        name:"[name].[ext]",// 生成的文件名词
-                        outputPath:"images", // 文件的输出位置
-                        publicPath:'./images', //文件的使用位置， publickPath+ name 生成css中图片的使用路径
+                use:[
+                    {
+                        // loader:'file-loader',
+                        loader:'url-loader', // 依赖于file-loader， 图片会转换成base64
+                        options:{
+                            name:"[name].[ext]",// 生成的文件名词
+                            outputPath:"images", // 文件的输出位置
+                            publicPath:'./images', //文件的使用位置， publickPath+ name 生成css中图片的使用路径
+                            limit: 31 * 1024, // 限制多少字节以内的文件转base64
+                        }
+                    },
+                    {
+                        loader:"image-webpack-loader",
+                        options:{
+
+                        }
                     }
-                }
+                ]
             },
+            {
+                test:/\.(eot|woff|woff2|svg|ttf)$/,
+                use:[
+                    {
+                        loader:'file-loader',
+                        options:{
+                            name:"[name].[ext]",
+                            outputPath:'font',
+                            publicPath:"./font" // 注意路径
+                        }
+                    }
+                ]
+            }
         ]
     }
 }

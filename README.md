@@ -134,6 +134,37 @@ loader路径使用resolveLoader：告知webpack如何匹配loader
 1. file-loader 5版本的webpack使用其他方案，所有webpack4不用制定版本
     文件放入输出路径中，在代码中拿到资源路径
 
-### 第三方字体文件
+2. url-loader 是file-loader的pro版本，可以直接替换file-loader
+增加了图片转base64的功能，减少文件请求。需要做限制，小文件转base64合适，大文件会导致包太大
+依赖file-loader
 
-资源压缩、优化
+3. image-webpack-loader 图片压缩loader
+此loader有坑，直接使用npm安装虽然提示安装成功，但是实际上它的依赖安装未成功导致打包失败，且错误提示位置也不对
+解决：使用cnpm安装此loader，配置淘宝源或者yarn也不能解决这个问题
+
+### 第三方字体文件 icon
+file-loader  或者 url-loader
+
+### webpack5.x对静态资源的处理
+asset //通用资源 》8kb使用file-loader  《8kb使用url-loader
+asset/resource //文件资源 相当于file-loader
+asset/inline //内联base64 相当于url-loader
+```
+module:{
+    rules:[
+        {
+            test:'/\.png$/',
+            type:'asset', //asset/resource  asset/inline 
+            generator:{
+                filename:'xxx/[name][ext]'
+            },
+            parser:{
+                dataUrlCondition:{
+                    maxSize:'',   //用于限制多大的图片使用asset自动转base64，也是使用asset/inline,他是用来修改默认的8kb大小
+            }
+        }
+    ]
+}
+```
+
+## 多页面打包解决方案
